@@ -34,7 +34,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="K5C-H6-fA1">
-                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="add" id="TTb-Am-aNl">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="TTb-Am-aNl">
                             <connections>
                                 <segue destination="hlI-S0-vSf" kind="presentation" id="lnF-6B-76w"/>
                             </connections>
