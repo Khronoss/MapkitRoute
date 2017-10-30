@@ -28,6 +28,7 @@ class CreateRoadViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         locationManager = LocationManager()
+		locationManager.delegate = self
         
         stopButton.isHidden = true
         saveButtonContainer.isHidden = true
@@ -48,10 +49,14 @@ class CreateRoadViewController: UIViewController {
             self.saveButtonContainer.isHidden = true
         }
         
-        locationManager.askUserPermissionIfNeeded()
-        
-        mapView.setUserTrackingMode(.followWithHeading, animated: true)
-        isTracking = true
+		locationManager.askUserPermissionIfNeeded() { [weak self] (status: CLAuthorizationStatus) in
+			guard status == .denied else {
+				return
+			}
+			
+			self?.mapView.setUserTrackingMode(.followWithHeading, animated: true)
+			self?.isTracking = true
+		}
     }
     
     @IBAction func stopTracking() {
@@ -124,6 +129,20 @@ class CreateRoadViewController: UIViewController {
 	}
 }
 
+extension CreateRoadViewController: LocationManagerDelegate {
+	func userLocationUpdated(_ manager: LocationManager, locations: [CLLocation]) {
+		let newSteps = locations.map { (location) -> Coordinate in
+			return location.coordinate
+		}
+		
+		recordedSteps = (recordedSteps ?? []) + newSteps
+	}
+	
+	func userLocationUpdateFailed(_ manager: LocationManager, error: Error) {
+		print(error)
+	}
+}
+
 extension CreateRoadViewController: MKMapViewDelegate {
 	
     func mapViewWillStartLocatingUser(_ mapView: MKMapView) {
@@ -132,16 +151,6 @@ extension CreateRoadViewController: MKMapViewDelegate {
     
     func mapViewDidStopLocatingUser(_ mapView: MKMapView) {
         showAlert(title: "MAPVIEW", message: "Stoped locating user")
-    }
-    
-    func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
-        guard isTracking == true else {
-            return
-        }
-        
-        recordedSteps?.append(userLocation.coordinate)
-
-        print(userLocation.coordinate)
     }
     
     func mapView(_ mapView: MKMapView, didFailToLocateUserWithError error: Error) {

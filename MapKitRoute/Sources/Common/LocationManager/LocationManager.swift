@@ -11,25 +11,55 @@ import CoreLocation
 
 typealias LocationAuthorization = CLAuthorizationStatus
 
-protocol LocationManagerDelegate: class {
-    func locationManager(_ manager: LocationManager, didSetAuthorization status: LocationAuthorization)
+@objc protocol LocationManagerDelegate: class {
+    @objc optional func locationManager(_ manager: LocationManager, didSetAuthorization status: LocationAuthorization)
+	
+	@objc optional func userLocationUpdated(_ manager: LocationManager, locations: [CLLocation])
+	@objc optional func userLocationUpdateFailed(_ manager: LocationManager, error: Error)
 }
 
 class LocationManager: NSObject {
     private var locationManager = CLLocationManager()
     weak var delegate: LocationManagerDelegate?
-    
-    func askUserPermissionIfNeeded() -> Void {
+	
+	private var authorizationCallback: ((CLAuthorizationStatus) -> Void)?
+	
+	override init() {
+		super.init()
+		
+		locationManager.delegate = self
+	}
+	
+	func askUserPermissionIfNeeded(_ callback: @escaping (CLAuthorizationStatus) -> Void) -> Void {
         guard CLLocationManager.authorizationStatus() == .notDetermined else {
-            return
+			callback(CLLocationManager.authorizationStatus())
+			return
         }
-        
+		
+		authorizationCallback = callback
         locationManager.requestAlwaysAuthorization()
     }
+	
+	func startTrackingUserLocation() -> Void {
+		locationManager.startUpdatingLocation()
+	}
+
+	func stpTrackingUserLocation() -> Void {
+		locationManager.stopUpdatingLocation()
+	}
 }
 
 extension LocationManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        delegate?.locationManager(self, didSetAuthorization: status)
+		authorizationCallback?(status)
+        delegate?.locationManager?(self, didSetAuthorization: status)
     }
+	
+	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+		delegate?.userLocationUpdated?(self, locations: locations)
+	}
+
+	func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+		delegate?.userLocationUpdateFailed?(self, error: error)
+	}
 }
