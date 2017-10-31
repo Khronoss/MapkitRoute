@@ -34,7 +34,7 @@ class CreateRoadViewController: UIViewController {
         saveButtonContainer.isHidden = true
 		
 		mapView.showsUserLocation = true
-		mapView.setUserTrackingMode(.followWithHeading, animated: true)
+        mapView.setUserTrackingMode(.follow, animated: true)
     }
 
     override func didReceiveMemoryWarning() {
@@ -54,7 +54,7 @@ class CreateRoadViewController: UIViewController {
 				return
 			}
 			
-			self?.mapView.setUserTrackingMode(.followWithHeading, animated: true)
+            self?.locationManager.startTrackingUserLocation()
 			self?.isTracking = true
 		}
     }
@@ -67,7 +67,6 @@ class CreateRoadViewController: UIViewController {
         }
         
         isTracking = false
-        mapView.setUserTrackingMode(.follow, animated: true)
 		
 		calculatePaths()
     }

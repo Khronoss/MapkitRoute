@@ -57,6 +57,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		87E923991FA8D9AB003D1B91 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				87E9239A1FA8D9C1003D1B91 /* LocationSimulations */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		87E9239A1FA8D9C1003D1B91 /* LocationSimulations */ = {
+			isa = PBXGroup;
+			children = (
+				FAEC581A1FA6805B00BF0422 /* TestSimulatedLocation.gpx */,
+			);
+			path = LocationSimulations;
+			sourceTree = "<group>";
+		};
 		FA2D63061F9CBE6600A9DE0B = {
 			isa = PBXGroup;
 			children = (
@@ -77,12 +93,12 @@
 		FA2D63111F9CBE6600A9DE0B /* MapKitRoute */ = {
 			isa = PBXGroup;
 			children = (
+				87E923991FA8D9AB003D1B91 /* Resources */,
 				FA2D63261F9CBE9F00A9DE0B /* Storyboards */,
 				FA2D63251F9CBE9000A9DE0B /* AppDelegate */,
 				FA2D63241F9CBE8600A9DE0B /* Sources */,
 				FA2D63191F9CBE6600A9DE0B /* Assets.xcassets */,
 				FA2D631E1F9CBE6600A9DE0B /* Info.plist */,
-				FAEC581A1FA6805B00BF0422 /* TestSimulatedLocation.gpx */,
 			);
 			path = MapKitRoute;
 			sourceTree = "<group>";

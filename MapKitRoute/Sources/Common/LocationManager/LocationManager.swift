@@ -44,7 +44,7 @@ class LocationManager: NSObject {
 		locationManager.startUpdatingLocation()
 	}
 
-	func stpTrackingUserLocation() -> Void {
+	func stopTrackingUserLocation() -> Void {
 		locationManager.stopUpdatingLocation()
 	}
 }
