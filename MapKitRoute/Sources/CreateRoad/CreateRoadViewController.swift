@@ -19,7 +19,6 @@ class CreateRoadViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
     private var locationManager: LocationManager!
     
-    private var isTracking: Bool = false
     private var recordedSteps: [Coordinate]?
 	private var calculatedStepsCount = 0
     
@@ -53,9 +52,7 @@ class CreateRoadViewController: UIViewController {
 			guard status == .denied else {
 				return
 			}
-			
             self?.locationManager.startTrackingUserLocation()
-			self?.isTracking = true
 		}
     }
     
@@ -65,9 +62,6 @@ class CreateRoadViewController: UIViewController {
             self.stopButton.isHidden = true
             self.saveButtonContainer.isHidden = false
         }
-        
-        isTracking = false
-		
 		calculatePaths()
     }
     
