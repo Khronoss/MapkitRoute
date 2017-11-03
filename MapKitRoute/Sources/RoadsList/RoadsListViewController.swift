@@ -51,11 +51,7 @@ class RoadsListViewController: UITableViewController {
 		let savedRoadsService = SavedRoadsService()
 		roads = savedRoadsService.savedRoads()
 		
-		let indexes = roads.indices.map { (index) -> IndexPath in
-			return IndexPath(row: index, section: 0)
-		}
-		
-		tableView.insertRows(at: indexes, with: .automatic)
+        tableView.reloadData()
 	}
 }
 
